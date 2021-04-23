@@ -15,21 +15,46 @@ body{
     width: 100vw;
     display: grid;
     grid-template-columns: 1fr 60vw 1fr;
-    grid-template-rows: 1fr 8vh 4fr;
+    grid-template-rows: 1fr 8vh 4fr 1fr;
     grid-template-areas: 
-    ". answer ."
+    ". . ."
     ". form ."
+    ". endgame ."
     ". . .";
 }
 
-#showAnswer{
+#endgame{
+    visibility: hidden;
+    grid-area: endgame;
     display: flex;
-    grid-area: answer;
+    flex-direction: column;
     z-index: 1;
-    justify-content: center;
-    align-self: flex-end;
-    font-size: x-large;
-    text-transform: capitalize;
+    justify-self: center;
+    align-self: center;
+    font-size: 12vh;
+    font-weight: 900;
+    user-select: none;
+    text-shadow: 0px 0px 7px #ffffff;
+    line-height: 0%;
+    text-align: center;
+
+}
+
+#newGame{
+    background-color: #5FC262;
+    color: #182e18;
+    border: none;
+    font-size:6vh;
+    padding-left: 4vh;
+    padding-right: 4vh;
+    border-radius: 4vh;
+}
+
+#newGame:focus{
+    background-color: #5FC262;
+    color: #d6f7d7;
+    box-shadow: 1px 0px 14px 3px  rgba(29, 29, 29, 0.381);
+    outline: none;
 }
 
 #form{

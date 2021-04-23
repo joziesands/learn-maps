@@ -1,3 +1,7 @@
+
+// statesData;
+// countryData;
+
 let statesData = {
 	"features": [{
 			"type": "Feature",
@@ -4435,7 +4439,18 @@ let statesData = {
 			}
 		}
 	]
-};
+}
+
+/*
+fetch("./states.json")
+    .then(response =>{
+        return response.json()
+    })
+    .then(data =>{
+        statesData = data;
+        console.log(data);
+    })
+*/
 
 let map = L.map('mapid', {zoomControl: false, scrollWheelZoom: false}).setView([51.505, -0.09], 13);
 
@@ -4447,14 +4462,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 let form = document.getElementById("form");
-let showAnswer = document.getElementById("showAnswer");
+let resetGame = document.getElementById("newGame")
 let stateinput = document.getElementById("stateinput");
 stateinput.focus();
 
 
 
 let correctAnswers = {};
-let cycles = 2;
+let cycles = 1;
 let totalCorrect = 0;
 let gameComplete = cycles * statesData.features.length;
 
@@ -4469,13 +4484,12 @@ for(let i = 0; i < statesData.features.length; i++){
 
 let activeState = getState();  // reference to correctAnswers obj
 
+
 function getState(){
     let random = Math.round(Math.random()*(statesData.features.length-1));
-    console.log(random);
     while(correctAnswers[random].correct >= cycles ){
         if(random+1 < statesData.features.length){
             random += 1;
-            console.log("plus one")
         } else {
             random = 0;
         }
@@ -4502,9 +4516,21 @@ function getState(){
 
 function endGame(){
     map.setView([50.8283, -110.5795], 3);
-    console.log("end game");
     totalCorrect = 0;
+    stateinput.value = "";
+    endgame = document.getElementById("endgame");
+    endgame.style.visibility = "visible";
+
 }
+
+newGame.addEventListener("click", function(event){
+    for(state in correctAnswers){
+        if(correctAnswers[state].layer){
+            map.removeLayer(correctAnswers[state].layer)
+        }    
+    }
+    endgame.style.visibility = "hidden";
+})
 
 
 form.addEventListener("submit", function(event){
@@ -4512,7 +4538,6 @@ form.addEventListener("submit", function(event){
 
     let guess = (stateinput.value).toUpperCase();
     if(guess === activeState.stats.name){
-        console.log("right!");
         // update stats
         totalCorrect += 1;
         activeState.stats.correct += 1;
@@ -4525,6 +4550,8 @@ form.addEventListener("submit", function(event){
             color: "#235FA4",
             fillOpacity: 0.5
         });
+        // add layer to correctAnswers
+        activeState.stats.layer = activeState.layer;
     } else {
         // show correct answer ? TODO
         activeState.stats.shown += 1;

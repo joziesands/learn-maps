@@ -4486,6 +4486,7 @@ let activeState = getState();  // reference to correctAnswers obj
 
 
 function getState(){
+    console.log('here')
     let random = Math.round(Math.random()*(statesData.features.length-1));
     while(correctAnswers[random].correct >= cycles ){
         if(random+1 < statesData.features.length){
@@ -4530,6 +4531,17 @@ newGame.addEventListener("click", function(event){
         }    
     }
     endgame.style.visibility = "hidden";
+
+    for(let i = 0; i < statesData.features.length; i++){
+        correctAnswers[i] = {
+            "id": i,
+            "name": statesData.features[i].properties.name.toUpperCase(),
+            "correct": 0,
+            "shown": 0
+        }
+    }
+    activeState = getState();
+    stateinput.focus();
 })
 
 
